@@ -1,0 +1,19 @@
+﻿<div class="card shadow" style="width: 18rem;">
+    <img src="@trailModel.Image" class="card-img-top" alt="@trailModel.Name">
+    <div class="card-body">
+        <h5 class="card-title">@trailModel.Name</h5>
+        <h6 class="card-subtitle mb-3 text-muted"><span class="oi oi-map-marker"></span> @trailModel.Location</h6>
+        <div class="d-flex justify-content-between mb-3">
+            <span><span class="oi oi-clock mr-2"></span> @trailModel.TimeFormatted</span>
+            <span><span class="oi oi-infinity mr-2"></span> @trailModel.Length km</span>
+        </div>
+        <button class="btn btn-primary" title="View" @onclick="@(async () => await OnSelected.InvokeAsync(trailModel))">
+            <i class="bi bi-binoculars"></i>
+        </button>
+    </div>
+</div>
+
+@code {
+    [Parameter, EditorRequired] public TrailModel trailModel { get; set; } = default!;
+    [Parameter, EditorRequired] public EventCallback<TrailModel> OnSelected { get; set; }
+}

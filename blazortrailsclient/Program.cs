@@ -1,4 +1,4 @@
-using blazor_trails_cleient;
+using blazortrailsclient;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 
