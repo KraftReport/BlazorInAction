@@ -1,5 +1,52 @@
-﻿@page "/search"
+﻿@page "/search/{SearchTerm}"
+@inject HttpClient httpClient
+@inject NavigationManager navigationManager
 
-<PageTitle>Blazing Trails</PageTitle>
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item">
+            <a href="/">Home</a>
+        </li>
+        <li class="breadcrumb-item active" aria-current="page">
+            Search
+        </li>
+    </ol>
+</nav>
 
-<p>Search Results</p> 
+<h3 class="mt-5 mb-4">Search results for "@SearchTerm"</h3>
+
+@if(_searchResults == null)
+{
+    <p>Loading search results .....</p>
+}else
+{
+    <TrailDetail Trail="_selectedTrail" />
+    <div class="grid">
+        @foreach(var trail in _searchResults){
+            <Trail trailModel="trail" OnSelected="HandleTrailSelected"/>
+        }
+    </div>
+}
+
+
+
+@code{
+    private IEnumerable<TrailModel>? _searchResults;
+    private TrailModel? _selectedTrail;
+
+    [Parameter] public string SearchTerm { get; set; } = default!;
+
+    protected override async Task OnInitializedAsync()
+    {
+        try {
+            var tallTrails = await httpClient.GetFromJsonAsync<IEnumerable<TrailModel>>("trails/trail-data.json");
+            _searchResults = tallTrails!.Where(x => x.Name.Contains(SearchTerm, StringComparison.CurrentCultureIgnoreCase) || x.Location.Contains(SearchTerm, StringComparison.CurrentCultureIgnoreCase));
+        }catch(Exception ex){
+            Console.WriteLine(ex.Message);
+        }
+    }
+
+    private void HandleTrailSelected(TrailModel trailModel){
+        _selectedTrail = trailModel;
+    }
+}
