@@ -15,6 +15,8 @@
 
 <h3 class="mt-5 mb-4">Search results for "@SearchTerm"</h3>
 
+<SearchFilter SearchTerm="@SearchTerm" MaxLength="@MaxLength" MaxTime="@MaxTime"/>
+
 @if(_searchResults == null)
 {
     <p>Loading search results .....</p>
@@ -31,22 +33,57 @@
 
 
 @code{
+    private IEnumerable<TrailModel>? _cachedSearchResult;
     private IEnumerable<TrailModel>? _searchResults;
     private TrailModel? _selectedTrail;
 
     [Parameter] public string SearchTerm { get; set; } = default!;
+
+    [Parameter,SupplyParameterFromQuery] public int? MaxLength { get; set; }
+
+    [Parameter,SupplyParameterFromQuery] public int? MaxTime { get; set; }
 
     protected override async Task OnInitializedAsync()
     {
         try {
             var tallTrails = await httpClient.GetFromJsonAsync<IEnumerable<TrailModel>>("trails/trail-data.json");
             _searchResults = tallTrails!.Where(x => x.Name.Contains(SearchTerm, StringComparison.CurrentCultureIgnoreCase) || x.Location.Contains(SearchTerm, StringComparison.CurrentCultureIgnoreCase));
+            _cachedSearchResult = _searchResults;
         }catch(Exception ex){
             Console.WriteLine(ex.Message);
         }
     }
 
+    protected override void OnParametersSet()
+    { 
+        UpdateFilter();
+    }
+
     private void HandleTrailSelected(TrailModel trailModel){
         _selectedTrail = trailModel;
+    }
+
+    private void UpdateFilter()
+    {
+        var filters = new List<Func<TrailModel, bool>>();
+
+        if(MaxLength is not null && MaxLength > 0)
+        {
+            filters.Add(t => t.Length <= MaxLength);
+        }
+
+        if(MaxTime is not null && MaxTime > 0)
+        {
+            filters.Add(t => t.TimeinMinutes <= MaxTime * 60);
+        }
+
+        if (filters.Any())
+        {
+            _searchResults = _cachedSearchResult?.Where(trail => filters.All(filter => filter(trail)));
+        }
+        else
+        {
+            _searchResults = _cachedSearchResult;
+        }
     }
 }
