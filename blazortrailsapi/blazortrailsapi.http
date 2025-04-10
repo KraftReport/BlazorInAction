@@ -1,0 +1,6 @@
+@blazortrailsapi_HostAddress = http://localhost:5117
+
+GET {{blazortrailsapi_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
