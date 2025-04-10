@@ -55,3 +55,6 @@ nunit-*.xml
 /blazor-trails-cleient/.vs
 /blazortrailsclient/node_modules
 /blazortrailsclient/.vs
+/.vs/blazortrils/CopilotIndices
+/.vs/blazortrils/FileContentIndex
+/.vs
