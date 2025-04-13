@@ -1,10 +1,14 @@
 using blazortrailsapi.Persistence;
+using blazortrailsshared.Features.ManageTrails;
+using FluentValidation.AspNetCore;
 using Microsoft.EntityFrameworkCore;
+using System.Reflection;
+using static blazortrailsshared.Features.ManageTrails.TrailDto;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddControllers();
-
+builder.Services.AddControllers().AddFluentValidation(option => option.RegisterValidatorsFromAssemblyContaining<TrailValidattor>());
+ 
 builder.Services.AddDbContext<AppDbContext>(option =>
 {
     option.UseSqlServer(builder.Configuration.GetConnectionString("BlazorTrailsDb"));
