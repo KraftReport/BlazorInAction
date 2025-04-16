@@ -2,7 +2,11 @@
 using blazortrailsapi.Persistence;
 using blazortrailsapi.Persistence.Entities;
 using blazortrailsclient.Features.ManageTrails;
-using Microsoft.AspNetCore.Mvc; 
+using Microsoft.AspNetCore.Http.HttpResults;
+using Microsoft.AspNetCore.Mvc;
+using SixLabors.ImageSharp;
+using SixLabors.ImageSharp.Processing;
+using System.Data.Entity;
 
 namespace blazortrailsapi.Features.ManageTrails
 {
@@ -40,10 +44,12 @@ namespace blazortrailsapi.Features.ManageTrails
                 });
 
             await _appDbContext.Routes.AddRangeAsync(routeInstructions);
- 
+
             await _appDbContext.SaveChangesAsync(cancellationToken);
-  
+
             return Ok(trail.Id);
         }
     }
+
+
 }

@@ -54,6 +54,11 @@
             <ValidationMessage For="(()=>_trail.Location)" />
         </FormFieldSet>
 
+        <FormFieldSet>
+            <label for="trailImage" class="font-weight-bold text-secondary">Image</label>
+            <InputFile OnChange="LoadTrailImage" class="form-control-file" id="trailImage" accept=".png,.jpg,.jpeg" />
+        </FormFieldSet>
+
     </FormSection>
 
     <FormSection Title="Difficulty" HelpText="Help other hikers out by telling them the length of the trail is how long it might take them.">
@@ -138,6 +143,7 @@
     private bool _submitSuccessful;
     private string? errorMessage;
     private EditContext _editContext = default!;
+    private IBrowserFile? _trailImage;
 
     protected override void OnInitialized()
     {
@@ -156,8 +162,41 @@
             return;
         }
 
+        if(_trailImage is null)
+        {
+            _submitSuccessful = false;
+            ResetForm();
+            return;
+        }
+
+        await ProcessImage(response.TrailId);
+
+    }
+
+    private void LoadTrailImage(InputFileChangeEventArgs args)
+    {
+        _trailImage = args.File;
+    }
+
+    private void ResetForm()
+    {
         _trail = new TrailDto();
-        _submitSuccessful = true;
-        errorMessage = null;
+        _editContext = new EditContext(_trail);
+        _editContext.SetFieldCssClassProvider(new BootstrapCssClassProvider());
+        _trailImage = null;
+    }
+
+    private async Task ProcessImage(int trailId)
+    {
+        var imageUploadResponse = await mediator.Send(new UploadImageRequest(trailId, _trailImage));
+
+        if (string.IsNullOrWhiteSpace(imageUploadResponse.imageName))
+        {
+            errorMessage = "Your trail was saved but there was problem uploading the image.";
+            return;
+        }
+
+        _submitSuccessful = false;
+        ResetForm();
     }
 }
