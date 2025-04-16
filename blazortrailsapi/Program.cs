@@ -2,6 +2,7 @@ using blazortrailsapi.Persistence;
 using blazortrailsshared.Features.ManageTrails;
 using FluentValidation.AspNetCore;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.FileProviders;
 using System.Reflection;
 using static blazortrailsshared.Features.ManageTrails.TrailDto;
 
@@ -26,6 +27,12 @@ app.UseHttpsRedirection();
 app.UseBlazorFrameworkFiles();
 
 app.UseStaticFiles();
+
+app.UseStaticFiles(new StaticFileOptions()
+{
+    FileProvider = new PhysicalFileProvider(Path.Combine(Directory.GetCurrentDirectory(), @"Images")),
+    RequestPath = new PathString("/Images")
+});
 
 app.MapControllers();
 
