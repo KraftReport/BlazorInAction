@@ -1,21 +1,23 @@
 ﻿using Ardalis.ApiEndpoints;
 using Azure.Core;
 using blazortrailsapi.Persistence;
-using blazortrailsclient.Features.ManageTrails;
+using blazortrailsshared.Features.ManageTrails.Shared;
 using Microsoft.AspNetCore.Mvc;
 using SixLabors.ImageSharp;
 using SixLabors.ImageSharp.Processing;
 using System.Data.Entity;
 
-namespace blazortrailsapi.Features.ManageTrails
+namespace blazortrailsapi.Features.ManageTrails.Shared
 {
-    public class UploadTrailImageEndpoint : EndpointBaseAsync.WithRequest<int>.WithActionResult<string>
+    public class UploadTrailImageEndpoint : EndpointBaseAsync
+        .WithRequest<int>
+        .WithActionResult<string>
     {
         private readonly AppDbContext _appDbContext;
 
         public UploadTrailImageEndpoint(AppDbContext appDbContext)
         {
-            this._appDbContext = appDbContext;
+            _appDbContext = appDbContext;
         }
 
         [HttpPost(UploadImageRequest.RouteTemplate)]
@@ -38,13 +40,18 @@ namespace blazortrailsapi.Features.ManageTrails
                 var resizeOptions = new ResizeOptions()
                 {
                     Mode = ResizeMode.Pad,
-                    Size = new SixLabors.ImageSharp.Size(640, 426)
+                    Size = new Size(640, 426)
                 };
 
                 using (var image = Image.Load(file.OpenReadStream()))
                 {
                     image.Mutate(x => x.Resize(resizeOptions));
                     await image.SaveAsJpegAsync(saveLocation, cancellationToken);
+                }
+
+                if (string.IsNullOrWhiteSpace(trail.Image))
+                {
+                    System.IO.File.Delete(Path.Combine(Directory.GetCurrentDirectory(), "Images", trail.Image));
                 }
 
                 trail.Image = fileName;

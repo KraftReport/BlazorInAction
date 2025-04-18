@@ -1,0 +1,123 @@
+﻿@page "/edit-trail/{TrailId:int}"
+@inject IMediator mediator
+
+<PageTitle>Edit Trail - Blazing Trails</PageTitle>
+
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="/">Home</a></li>
+        <li class="breadcrumb-item active" aria-current="page">Edit Trail</li>
+    </ol>
+</nav>
+
+@if (_isLoading)
+{
+    <p>Loading Trail ...</p>
+}
+else
+{
+    <h3 class="mt-4 mb-4">Editing trail : @_trail.Name</h3>
+
+    @if (_submitSuccessful)
+    {
+        <SuccessAlert Message="Your trail has benn edited successfully" />
+    }else if(_errorMessage is not null)
+    {
+        <ErrorAlert Message="@_errorMessage"/>    
+    }
+
+    <TrailForm Trail="_trail" OnSubmit="SubmitEditTrail" />
+}
+
+@code{
+    private bool _isLoading;
+    private bool _submitSuccessful;
+    private string? _errorMessage;
+    private TrailDto _trail = new TrailDto();
+
+    [Parameter] public int TrailId { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        _isLoading = true;
+
+        Console.WriteLine($"trail id{TrailId}");
+
+        var response = await mediator.Send(new GetTrailRequest(TrailId));
+
+        if(response is not null)
+        {
+            _trail.Image = response.TrailDto.Image;
+            _trail.Id = TrailId;
+            _trail.Name = response.TrailDto.Name;
+            _trail.Description = response.TrailDto.Description;
+            _trail.Length = response.TrailDto.Length;
+            _trail.TimeInMinutes = response.TrailDto.TimeInMinutes;
+            _trail.Location = response.TrailDto.Location;
+            _trail.RouteInstructions.AddRange(response.TrailDto.RouteInstructions
+                .Select(x => new blazortrailsshared.Features.ManageTrails.Shared.RouteInstruction
+            {
+                Description = x.Description,
+                State = x.Stage
+            }));
+        }
+        else
+        {
+            _errorMessage = "There was error loading the trail";
+        }
+        _isLoading = false;
+    }
+
+    private async Task SubmitEditTrail(TrailDto trailDto,IBrowserFile? file)
+    {
+        var response = await mediator.Send(new EditTrailRequest(trailDto));
+
+        if (!response.IsSuccess)
+        {
+            _submitSuccessful = false;
+            _errorMessage = "There is error in saving your trail.";
+        }
+        else
+        {
+            _trail.Name = trailDto.Name;
+            _trail.Description = trailDto.Description;
+            _trail.Location = trailDto.Location;
+            _trail.Length = trailDto.Length;
+            _trail.TimeInMinutes = trailDto.TimeInMinutes;
+            _trail.RouteInstructions.Clear();
+            _trail.RouteInstructions.AddRange(trailDto.RouteInstructions.Select(x => new blazortrailsshared.Features.ManageTrails.Shared.RouteInstruction
+                {
+                    Description = x.Description,
+                    State = x.State
+                }));
+
+            _submitSuccessful = true;
+
+            if(trailDto.ImageAction == ImageAction.ADD)
+            {
+                _submitSuccessful = await ProcessImage(TrailId, file!);
+            }
+
+            if(trailDto.ImageAction == ImageAction.DELETE)
+            {
+                _trail.Image = "";
+            }
+        }
+
+        StateHasChanged();
+    }
+
+    private async Task<bool> ProcessImage(int trailId,IBrowserFile file)
+    {
+        var response = await mediator.Send(new UploadImageRequest(trailId, file));
+
+        if(string.IsNullOrWhiteSpace(response.imageName))
+        {
+            _errorMessage = "There is problem in saving the image";
+            return false;
+        }
+
+        _trail.Image = response.imageName;
+        return true;
+    }
+}

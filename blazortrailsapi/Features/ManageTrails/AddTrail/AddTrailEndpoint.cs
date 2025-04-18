@@ -1,24 +1,24 @@
 ﻿using Ardalis.ApiEndpoints;
 using blazortrailsapi.Persistence;
 using blazortrailsapi.Persistence.Entities;
-using blazortrailsclient.Features.ManageTrails;
+using blazortrailsshared.Features.ManageTrails.AddTrail;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using SixLabors.ImageSharp;
 using SixLabors.ImageSharp.Processing;
 using System.Data.Entity;
 
-namespace blazortrailsapi.Features.ManageTrails
+namespace blazortrailsapi.Features.ManageTrails.AddTrail
 {
-    public class AddTrailEndpoints : EndpointBaseAsync
+    public class AddTrailEndpoint : EndpointBaseAsync
         .WithRequest<AddTrailRequest>
         .WithActionResult<AddTrailRequest.Response>
     {
         private readonly AppDbContext _appDbContext;
 
-        public AddTrailEndpoints(AppDbContext appDbContext)
+        public AddTrailEndpoint(AppDbContext appDbContext)
         {
-            this._appDbContext = appDbContext;
+            _appDbContext = appDbContext;
         }
 
         [HttpPost(AddTrailRequest.RouteTemplate)]

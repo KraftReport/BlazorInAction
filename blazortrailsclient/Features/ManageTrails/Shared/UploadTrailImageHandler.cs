@@ -1,6 +1,7 @@
-﻿using MediatR;
+﻿using blazortrailsshared.Features.ManageTrails.Shared;
+using MediatR;
 
-namespace blazortrailsclient.Features.ManageTrails
+namespace blazortrailsclient.Features.ManageTrails.Shared
 {
     public class UploadTrailImageHandler : IRequestHandler<UploadImageRequest, UploadImageRequest.Response>
     {

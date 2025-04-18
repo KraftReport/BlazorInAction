@@ -1,7 +1,7 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Components.Forms;
 
-namespace blazortrailsclient.Features.ManageTrails
+namespace blazortrailsshared.Features.ManageTrails.Shared
 {
     public record UploadImageRequest(int TrailId,IBrowserFile File) : IRequest<UploadImageRequest.Response>
     {
