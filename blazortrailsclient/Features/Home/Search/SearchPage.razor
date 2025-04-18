@@ -1,6 +1,7 @@
 ﻿@page "/search/{SearchTerm}"
 @inject HttpClient httpClient
 @inject NavigationManager navigationManager
+@inject IMediator mediator
 
 <nav aria-label="breadcrumb">
     <ol class="breadcrumb">
@@ -46,7 +47,16 @@
     protected override async Task OnInitializedAsync()
     {
         try {
-            var tallTrails = await httpClient.GetFromJsonAsync<IEnumerable<TrailModel>>("trails/trail-data.json");
+            var response = await mediator.Send(new GetTrailsRequest());
+            var tallTrails = response.Trails.Select(x => new TrailModel
+                {
+                    Id = x.Id,
+                    Name = x.Name,
+                    Description = x.Description,
+                    Location = x.Location,
+                    Length = x.Length,
+                    TimeinMinutes = x.TimeInMinutes
+                });
             _searchResults = tallTrails!.Where(x => x.Name.Contains(SearchTerm, StringComparison.CurrentCultureIgnoreCase) || x.Location.Contains(SearchTerm, StringComparison.CurrentCultureIgnoreCase));
             _cachedSearchResult = _searchResults;
         }catch(Exception ex){
