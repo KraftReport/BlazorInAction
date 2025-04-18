@@ -1,8 +1,8 @@
-﻿using blazortrailsshared.Features.ManageTrails;
+﻿using blazortrailsshared.Features.ManageTrails.Shared;
 using FluentValidation;
 using MediatR;
 
-namespace blazortrailsclient.Features.ManageTrails
+namespace blazortrailsshared.Features.ManageTrails.AddTrail
 {
     public record AddTrailRequest(TrailDto TrailDto) : IRequest<AddTrailRequest.Response> 
     {

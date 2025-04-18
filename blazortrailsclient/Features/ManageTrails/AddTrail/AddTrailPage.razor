@@ -1,0 +1,76 @@
+﻿@page "/add-trail"
+@using blazortrailsshared.Features.ManageTrails.Shared
+@inject IMediator mediator
+
+<PageTitle>Add Trail - Blazing Trails</PageTitle>
+
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="/">Home</a></li>
+        <li class="breadcrumb-item active" aria-current="page">Add Trail</li>
+    </ol>
+</nav>
+
+<h3 class="mt-5 mb-4">Add a trail</h3>
+
+@if (_submitSuccessful)
+{
+    <SuccessAlert Message="Your trail was added successfully!" />
+
+}else if (errorMessage is not null)
+{
+
+    <ErrorAlert Message="@errorMessage" />
+
+}
+
+<TrailForm @ref="_trailForm" OnSubmit="SubmitNewTrail"></TrailForm>
+
+@code {
+    private bool _submitSuccessful;
+    private string? errorMessage; 
+    private TrailForm _trailForm = default!; 
+
+    private async Task SubmitNewTrail(TrailDto trailDto,IBrowserFile file)
+    {
+        var response = await mediator.Send(new AddTrailRequest(trailDto));
+
+        if (response.TrailId == -1)
+        {
+            _submitSuccessful = false;
+            errorMessage = "There was an error adding the trail.";
+            StateHasChanged();
+            return;
+        }
+
+        if(file is null)
+        {
+            _submitSuccessful = false;
+            _trailForm.ResetForm();
+            StateHasChanged();
+            return;
+        }
+
+        _submitSuccessful = await ProcessImage(response.TrailId,file);
+
+        if (_submitSuccessful)
+        {
+            _trailForm.ResetForm();
+        }
+
+        StateHasChanged();
+    }
+
+    private async Task<bool> ProcessImage(int trailId,IBrowserFile image)
+    {
+        var imageUploadResponse = await mediator.Send(new UploadImageRequest(trailId,image));
+
+        if (string.IsNullOrWhiteSpace(imageUploadResponse.imageName))
+        {
+            errorMessage = "Your trail was saved but there was problem uploading the image.";
+            return false;
+        }
+
+        return true;
+    }
+}

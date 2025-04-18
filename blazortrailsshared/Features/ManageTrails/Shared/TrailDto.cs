@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace blazortrailsshared.Features.ManageTrails
+namespace blazortrailsshared.Features.ManageTrails.Shared
 {
     public class TrailDto
     {
@@ -15,7 +15,14 @@ namespace blazortrailsshared.Features.ManageTrails
         public string Location { get; set; } = string.Empty;
         public int TimeInMinutes { get; set; }
         public int Length { get; set; }
+        public string? Image { get; set; }
+        public ImageAction ImageAction { get; set; }
         public List<RouteInstruction> RouteInstructions { get; set; } = new List<RouteInstruction>();
+    }
+
+    public enum ImageAction
+    {
+        ADD,DELETE,NONE
     }
 
     public class TrailValidattor : AbstractValidator<TrailDto>

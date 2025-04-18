@@ -1,10 +1,10 @@
 using blazortrailsapi.Persistence;
-using blazortrailsshared.Features.ManageTrails;
+using blazortrailsshared.Features.ManageTrails.Shared;
 using FluentValidation.AspNetCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.FileProviders;
 using System.Reflection;
-using static blazortrailsshared.Features.ManageTrails.TrailDto;
+using static blazortrailsshared.Features.ManageTrails.Shared.TrailDto;
 
 var builder = WebApplication.CreateBuilder(args);
 
