@@ -58,3 +58,4 @@ nunit-*.xml
 /.vs/blazortrils/CopilotIndices
 /.vs/blazortrils/FileContentIndex
 /.vs
+/balzortrailscomponentlibrary/node_modules

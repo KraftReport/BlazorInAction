@@ -19,4 +19,6 @@
         public int State { get; set; }
         public string Description { get; set; }
     }
+
+
 }
