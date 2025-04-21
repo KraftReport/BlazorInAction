@@ -1,8 +1,9 @@
 {
     "scripts": {
- "sass": "sass" 
- },
+        "sass": "sass"
+    },
     "devDependencies": {
- "sass": "1.28.0" 
- }
+        "eslint": "^9.25.0",
+        "sass": "1.28.0"
+    }
 }
