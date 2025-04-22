@@ -12,7 +12,7 @@ namespace blazortrailsapi.Persistence.Entities
         public string Location { get; set; } = default!;
         public int TimeInMinutes { get; set; }
         public int Length { get; set; }
-        public ICollection<RouteInstruction> Route { get; set; } = default!;
+        public ICollection<Waypoint> Waypoints { get; set; } = default!;
     }
 
     public class TrailConfig : IEntityTypeConfiguration<Trail>
@@ -23,7 +23,7 @@ namespace blazortrailsapi.Persistence.Entities
             builder.Property(x => x.Description).IsRequired();
             builder.Property(x => x.Location).IsRequired();
             builder.Property(x => x.TimeInMinutes).IsRequired();
-            builder.Property(x => x.Length).IsRequired(); 
+            builder.Property(x => x.Length).IsRequired();
         }
     }
 
@@ -43,6 +43,25 @@ namespace blazortrailsapi.Persistence.Entities
             builder.Property(x => x.TrailId).IsRequired();
             builder.Property(x => x.Stage).IsRequired();
             builder.Property(x => x.Description).IsRequired();
+        }
+    }
+
+    public class Waypoint
+    {
+        public int Id { get; set; }
+        public int TrailId { get; set; }
+        public decimal Latitude { get; set; }
+        public decimal Longitude { get; set; }
+        public Trail Trail { get; set; } = default!;
+    }
+
+    public class WaypointConfig : IEntityTypeConfiguration<Waypoint>
+    {
+        public void Configure(EntityTypeBuilder<Waypoint> builder)
+        {
+            builder.Property(x => x.TrailId).IsRequired();
+            builder.Property(x => x.Latitude).IsRequired();
+            builder.Property(x => x.Longitude).IsRequired();
         }
     }
 }

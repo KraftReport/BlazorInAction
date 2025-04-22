@@ -19,6 +19,10 @@
     private IJSObjectReference? _routeMapModule;
     private DotNetObjectReference<RouteMap> _routeMapReference;
 
+
+    [Parameter] public List<LatLong> Waypoints { get; set; } = new List<LatLong>();
+    [Parameter] public EventCallback<LatLong> OnWaypointAdded { get; set; }
+    [Parameter] public EventCallback<LatLong> OnWaypointDeleted { get; set; }
     [Parameter] public string Height { get; set; } = "500px";
     [Parameter] public string Width { get; set; } = "1000px";
 
@@ -37,14 +41,14 @@
         {
             _routeMapModule = await JSRuntime.InvokeAsync<IJSObjectReference>("import", "./_content/balzortrailscomponentlibrary/Map/RouteMap.razor.js");
             _routeMapReference = DotNetObjectReference.Create(this);
-            await _routeMapModule.InvokeVoidAsync("initialize", _map, _routeMapReference);
+            await _routeMapModule.InvokeVoidAsync("initialize", _map, _routeMapReference, Waypoints);
         }   
     } 
 
     [JSInvokable]
     public void WaypointAdded(decimal latitude,decimal longitude)
     {
-        Console.WriteLine($"Waypoint latitude {latitude} and longitude {longitude} is added");
+        Console.WriteLine($"Waypoint latitude {latitude}oand longitude {longitude} is added");
     }
 
     public void Dispose()

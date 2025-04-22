@@ -17,7 +17,8 @@ namespace blazortrailsshared.Features.ManageTrails.Shared
         public int Length { get; set; }
         public string? Image { get; set; }
         public ImageAction ImageAction { get; set; }
-        public List<RouteInstruction> RouteInstructions { get; set; } = new List<RouteInstruction>();
+        public List<WaypointDto> Waypoints { get; set; } = new List<WaypointDto>();
+        public record WaypointDto(decimal Latitude, decimal Longitude);
     }
 
     public enum ImageAction
@@ -34,23 +35,12 @@ namespace blazortrailsshared.Features.ManageTrails.Shared
             RuleFor(x => x.Location).NotEmpty().WithMessage("Please enter a location");
             RuleFor(x => x.Length).GreaterThan(0).WithMessage("Please enter a length");
             RuleFor(x => x.TimeInMinutes).GreaterThan(0).WithMessage("Please enter a time");
-            RuleFor(x => x.RouteInstructions).NotEmpty().WithMessage("Please add one route instruction");
-            RuleForEach(x => x.RouteInstructions).SetValidator(new RouteInstructionValidator());
+            RuleFor(x => x.Waypoints).NotEmpty().WithMessage("Please enter waypoints");  
         }
     }
 
-    public class RouteInstruction
-    {
-        public int State { get; set; }
-        public string Description { get; set; } = string.Empty;
-    }
+  
+   
 
-    public class RouteInstructionValidator : AbstractValidator<RouteInstruction>
-    {
-        public RouteInstructionValidator()
-        {
-            RuleFor(x => x.State).NotEmpty().WithMessage("Please enter a state");
-            RuleFor(x => x.Description).NotEmpty().WithMessage("Please enter a description");
-        }
-    }
+ 
 }

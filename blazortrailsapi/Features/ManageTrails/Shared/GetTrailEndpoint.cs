@@ -22,11 +22,11 @@ namespace blazortrailsapi.Features.ManageTrails.Shared
         [HttpGet(GetTrailRequest.RouteTemplate)]
         public override Task<ActionResult<GetTrailRequest.Response>> HandleAsync([FromRoute]int trailId, CancellationToken cancellationToken = default)
         {
-            var trail = _appDbContext.Trails.Include(t=>t.Route).FirstOrDefault(x => x.Id == trailId);
+            var trail = _appDbContext.Trails.Include(t=>t.Waypoints).FirstOrDefault(x => x.Id == trailId);
 
-            var routes = _appDbContext.Routes.Where(r => r.TrailId == trail.Id).ToList();
+            var waypoints = _appDbContext.Waypoints.Where(r => r.TrailId == trail.Id).ToList();
 
-            trail.Route = routes;
+            trail.Waypoints = waypoints;
 
             if(trail is null)
             {
@@ -42,7 +42,7 @@ namespace blazortrailsapi.Features.ManageTrails.Shared
                     trail.Length,
                     trail.TimeInMinutes,
                     trail.Image,
-                    trail.Route.Select(x => new GetTrailRequest.RouteInstruction(x.Id, x.Description, x.Stage))));
+                    trail.Waypoints.Select(x => new GetTrailRequest.Waypoint(x.Latitude,x.Longitude))));
 
                 return Task.FromResult<ActionResult<GetTrailRequest.Response>>(Ok(response));
         }

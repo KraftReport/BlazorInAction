@@ -54,12 +54,8 @@ else
             _trail.Length = response.TrailDto.Length;
             _trail.TimeInMinutes = response.TrailDto.TimeInMinutes;
             _trail.Location = response.TrailDto.Location;
-            _trail.RouteInstructions.AddRange(response.TrailDto.RouteInstructions
-                .Select(x => new blazortrailsshared.Features.ManageTrails.Shared.RouteInstruction
-            {
-                Description = x.Description,
-                State = x.Stage
-            }));
+            _trail.Waypoints.AddRange(response.TrailDto.Waypoints
+                .Select(x => new blazortrailsshared.Features.ManageTrails.Shared.TrailDto.WaypointDto(x.Latitude, x.Longitude))); 
         }
         else
         {
@@ -84,12 +80,8 @@ else
             _trail.Location = trailDto.Location;
             _trail.Length = trailDto.Length;
             _trail.TimeInMinutes = trailDto.TimeInMinutes;
-            _trail.RouteInstructions.Clear();
-            _trail.RouteInstructions.AddRange(trailDto.RouteInstructions.Select(x => new blazortrailsshared.Features.ManageTrails.Shared.RouteInstruction
-                {
-                    Description = x.Description,
-                    State = x.State
-                }));
+            _trail.Waypoints.Clear();
+            _trail.Waypoints.AddRange(trailDto.Waypoints.Select(x => new blazortrailsshared.Features.ManageTrails.Shared.TrailDto.WaypointDto(x.Latitude,x.Longitude)));
 
             _submitSuccessful = true;
 

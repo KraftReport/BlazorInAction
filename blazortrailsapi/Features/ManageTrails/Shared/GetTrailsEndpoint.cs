@@ -1,8 +1,7 @@
 ﻿using Ardalis.ApiEndpoints;
 using blazortrailsapi.Persistence;
 using blazortrailsshared.Features.ManageTrails.Shared;
-using Microsoft.AspNetCore.Mvc;
-using System.Linq;
+using Microsoft.AspNetCore.Mvc; 
 
 namespace blazortrailsapi.Features.ManageTrails.Shared
 {
