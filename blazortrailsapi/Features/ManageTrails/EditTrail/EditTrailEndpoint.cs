@@ -1,5 +1,6 @@
 ﻿using Ardalis.ApiEndpoints;
 using blazortrailsapi.Persistence;
+using blazortrailsapi.Persistence.Entities;
 using blazortrailsshared.Features.ManageTrails.EditTrail;
 using Microsoft.AspNetCore.Mvc;
 
@@ -22,9 +23,9 @@ namespace blazortrailsapi.Features.ManageTrails.EditTrail
         {
             var trail = _appDbContext.Trails.FirstOrDefault(x => x.Id == request.TrailDto.Id);
 
-            var routes = _appDbContext.Routes.Where(x => x.TrailId == request.TrailDto.Id).ToList();
+            var waypoints = _appDbContext.Waypoints.Where(x => x.TrailId == request.TrailDto.Id).ToList();
 
-            trail.Route = routes;
+            trail.Waypoints = waypoints;
 
             if (trail is null)
             {
@@ -36,14 +37,14 @@ namespace blazortrailsapi.Features.ManageTrails.EditTrail
             trail.Location = request.TrailDto.Location;
             trail.Length = request.TrailDto.Length;
             trail.TimeInMinutes = request.TrailDto.TimeInMinutes;
-            trail.Route.Clear();
-            trail.Route = request.TrailDto.RouteInstructions.
-                Select(x => new Persistence.Entities.RouteInstruction
+            trail.Waypoints.Clear();
+            trail.Waypoints = request.TrailDto.Waypoints.
+                Select(x => new Waypoint
                 {
-                    Stage = x.State,
-                    Description = x.Description,
+                    Latitude = x.Latitude,
+                    Longitude = x.Longitude,
                     Trail = trail
-                }).ToList();
+                }).ToList(); 
 
             if(request.TrailDto.ImageAction == blazortrailsshared.Features.ManageTrails.Shared.ImageAction.DELETE)
             {

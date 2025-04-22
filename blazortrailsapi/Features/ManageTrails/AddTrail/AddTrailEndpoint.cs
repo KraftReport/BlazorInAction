@@ -35,15 +35,15 @@ namespace blazortrailsapi.Features.ManageTrails.AddTrail
 
             await _appDbContext.Trails.AddAsync(trail);
 
-            var routeInstructions = request.TrailDto.RouteInstructions
-                .Select(x => new RouteInstruction
+            var waypoints = request.TrailDto.Waypoints
+                .Select(x => new Waypoint
                 {
-                    Stage = x.State,
-                    Description = x.Description,
+                    Latitude = x.Latitude,
+                    Longitude = x.Longitude,
                     Trail = trail
-                });
+                }); 
 
-            await _appDbContext.Routes.AddRangeAsync(routeInstructions);
+            await _appDbContext.Waypoints.AddRangeAsync(waypoints);
 
             await _appDbContext.SaveChangesAsync(cancellationToken);
 
