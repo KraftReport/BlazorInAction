@@ -1,12 +1,21 @@
 using blazortrailsapi.Persistence;
 using blazortrailsshared.Features.ManageTrails.Shared;
 using FluentValidation.AspNetCore;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.FileProviders;
-using System.Reflection;
-using static blazortrailsshared.Features.ManageTrails.Shared.TrailDto;
+using Microsoft.Extensions.FileProviders; 
 
 var builder = WebApplication.CreateBuilder(args);
+
+builder.Services.AddAuthentication(option =>
+{
+    option.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+    option.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+}).AddJwtBearer(option =>
+{
+    option.Authority = builder.Configuration["Auth0:Authority"];
+    option.Audience = builder.Configuration["Auth0:ApiIdentifier"];
+});
 
 builder.Services.AddControllers().AddFluentValidation(option => option.RegisterValidatorsFromAssemblyContaining<TrailValidattor>());
  
@@ -33,6 +42,10 @@ app.UseStaticFiles(new StaticFileOptions()
     FileProvider = new PhysicalFileProvider(Path.Combine(Directory.GetCurrentDirectory(), @"Images")),
     RequestPath = new PathString("/Images")
 });
+
+app.UseAuthentication();
+
+app.UseAuthorization();
 
 app.MapControllers();
 
