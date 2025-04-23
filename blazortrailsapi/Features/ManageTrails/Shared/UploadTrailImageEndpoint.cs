@@ -49,7 +49,7 @@ namespace blazortrailsapi.Features.ManageTrails.Shared
                     await image.SaveAsJpegAsync(saveLocation, cancellationToken);
                 }
 
-                if (string.IsNullOrWhiteSpace(trail.Image))
+                if (!string.IsNullOrWhiteSpace(trail.Image))
                 {
                     System.IO.File.Delete(Path.Combine(Directory.GetCurrentDirectory(), "Images", trail.Image));
                 }

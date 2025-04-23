@@ -27,7 +27,7 @@ else
         <ViewSwitcher Items="_trails" Context="trail">
 
             <GridTemplate>
-                 <Trail trailModel="trail" OnSelected="HandleTrailSelected" />
+                <Trail trailModel="trail" OnSelected="HandleTrailSelected" />
             </GridTemplate>
 
             <HeaderTemplate>
@@ -44,8 +44,8 @@ else
                 <td>@(trail.Length)km</td>
                 <td>@trail.TimeFormatted</td>
                 <td class="text-right">
-                   <button @onclick="@(()=> HandleTrailSelected(trail))" title="View" class="btn btn-primary">
-                      <i class="bi  bi-binoculars"></i>
+                    <button @onclick="@(()=> HandleTrailSelected(trail))" title="View" class="btn btn-primary">
+                        <i class="bi  bi-binoculars"></i>
                     </button>
                     <button @onclick="@(()=> navigationManager.NavigateTo($"/edit-trail/{trail.Id}"))" title="Edit" class="btn btn-outline-secondary">
                         <i class="bi bi-pencil"></i>
@@ -90,7 +90,9 @@ else
                     Description = x.Description,
                     Location = x.Location,
                     Length = x.Length,
-                    TimeinMinutes = x.TimeInMinutes
+                    TimeinMinutes = x.TimeInMinutes,
+                    Waypoints = x.Waypoints.Select(w => new LatLong(w.Latitude,w.Longitude)).ToList(),
+                    Image = x.Image
                 });
         }
         catch (HttpRequestException ex)

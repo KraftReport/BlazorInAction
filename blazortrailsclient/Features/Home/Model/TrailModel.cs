@@ -1,4 +1,6 @@
-﻿namespace blazortrailsclient.Features.Home.Model
+﻿using balzortrailscomponentlibrary.Map;
+
+namespace blazortrailsclient.Features.Home.Model
 {
     public class TrailModel
     {
@@ -11,8 +13,8 @@
         public string TimeFormatted => $"{TimeinMinutes / 60}h{TimeinMinutes % 60}m";
         public int Length { get; set; }
         public IEnumerable<RouteInstruction> Routes { get; set; } = Array.Empty<RouteInstruction>();
+        public List<LatLong> Waypoints { get; set; } = new List<LatLong>();
     }
-
 
     public class RouteInstruction
     {

@@ -24,8 +24,10 @@
 
     private void AddWaypoint(LatLong waypoint)
     {
+        Console.WriteLine($"{waypoint.Lat.ToString()}{waypoint.Lng.ToString()}");
         _waypoints.Add(waypoint);
         CurrentValue?.Add(new TrailDto.WaypointDto(waypoint.Lat, waypoint.Lng));
+        Console.WriteLine(CurrentValue?.ToString());
     }
 
     private void DeleteWaypoint(LatLong waypoint)
