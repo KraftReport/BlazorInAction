@@ -13,6 +13,8 @@ namespace blazortrailsshared.Features.ManageTrails.Shared
 
         public record Response(IEnumerable<Trail> Trails);
 
-        public record Trail(int Id,string Name,string Description,int Length,string Location,int TimeInMinutes,string? Image);
+        public record Trail(int Id,string Name,string Description,int Length,string Location,int TimeInMinutes,string? Image,List<Waypoint> Waypoints);
+
+        public record Waypoint(decimal Latitude, decimal Longitude);
     }
 }
