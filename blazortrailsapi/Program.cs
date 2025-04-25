@@ -7,6 +7,17 @@ using Microsoft.Extensions.FileProviders;
 
 var builder = WebApplication.CreateBuilder(args);
 
+builder.Logging.SetMinimumLevel(LogLevel.Debug);
+
+builder.Logging.AddConsole();
+
+builder.Services.AddControllers().AddFluentValidation(option => option.RegisterValidatorsFromAssemblyContaining<TrailValidattor>());
+ 
+builder.Services.AddDbContext<AppDbContext>(option =>
+{
+    option.UseSqlServer(builder.Configuration.GetConnectionString("BlazorTrailsDb"));
+});
+
 builder.Services.AddAuthentication(option =>
 {
     option.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -15,13 +26,6 @@ builder.Services.AddAuthentication(option =>
 {
     option.Authority = builder.Configuration["Auth0:Authority"];
     option.Audience = builder.Configuration["Auth0:ApiIdentifier"];
-});
-
-builder.Services.AddControllers().AddFluentValidation(option => option.RegisterValidatorsFromAssemblyContaining<TrailValidattor>());
- 
-builder.Services.AddDbContext<AppDbContext>(option =>
-{
-    option.UseSqlServer(builder.Configuration.GetConnectionString("BlazorTrailsDb"));
 });
 
 var app = builder.Build();

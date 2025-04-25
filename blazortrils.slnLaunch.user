@@ -1,0 +1,15 @@
+[
+  {
+    "Name": "New Profile",
+    "Projects": [
+      {
+        "Path": "blazortrailsclient\\blazortrailsclient.csproj",
+        "Action": "Start"
+      },
+      {
+        "Path": "blazortrailsapi\\blazortrailsapi.csproj",
+        "Action": "Start"
+      }
+    ]
+  }
+]

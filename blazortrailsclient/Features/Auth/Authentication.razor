@@ -1,23 +1,32 @@
-﻿@page "/authentication/{action}"
+﻿@page "/authentication/{Action}"
 @using Microsoft.Extensions.Configuration
-
 @inject NavigationManager navigationManager
 @inject IConfiguration configuration
 
 <RemoteAuthenticatorView Action="@Action">
     <LogOut>
         @{
-            
             var authority = configuration["Auth0:Authority"];
-            
             var clientId = configuration["Auth0:ClientId"];
-            
-            navigationManager.NavigateTo($"{authority}/v2/logout?client_id={clientId}");
-        
+            var returnTo = Uri.EscapeDataString(navigationManager.BaseUri);
+
+            var logoutUrl = $"{authority}/v2/logout?client_id={clientId}&returnTo={returnTo}";
+            navigationManager.NavigateTo(logoutUrl, forceLoad: true);
         }
     </LogOut>
 </RemoteAuthenticatorView>
 
 @code {
-    [Parameter] public string? Action { get; set; } 
+    [Parameter] public string? Action { get; set; }
+
+    protected override void OnInitialized()
+    {
+        Console.WriteLine(Action);
+    }
+
+    protected override Task OnInitializedAsync()
+    {
+        Console.WriteLine(Action);
+        return base.OnInitializedAsync();
+    }
 }
