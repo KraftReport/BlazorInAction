@@ -16,7 +16,7 @@ namespace blazortrailsclient.Features.Home.Shared
 
         public async Task<GetTrailsRequest.Response> Handle(GetTrailsRequest request, CancellationToken cancellationToken)
         {
-            var response = await _httpClient.GetFromJsonAsync<GetTrailsRequest.Response>(GetTrailsRequest.RouteTemplate, cancellationToken);
+            var response = await _httpClient.GetFromJsonAsync<GetTrailsRequest.Response>($"{GetTrailsRequest.RouteTemplate}", cancellationToken);
 
             if (response is null)
             {

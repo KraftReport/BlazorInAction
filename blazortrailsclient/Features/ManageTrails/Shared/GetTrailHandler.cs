@@ -20,8 +20,8 @@ namespace blazortrailsclient.Features.ManageTrails.Shared
             {
                 Console.WriteLine($"tid -> {request.TrailId}");
                 var response = await _httpClient.GetFromJsonAsync<GetTrailRequest.Response>(
-                    GetTrailRequest.RouteTemplate.Replace("{trailId}",
-                    request.TrailId.ToString()),
+                    $"{GetTrailRequest.RouteTemplate.Replace("{trailId}",
+                    request.TrailId.ToString())}",
                     cancellationToken: cancellationToken);
 
                 return response ?? throw new Exception("Failed to retrieve trail data.");
