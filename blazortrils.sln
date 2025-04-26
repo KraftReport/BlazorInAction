@@ -11,6 +11,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "blazortrailsshared", "blazo
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "balzortrailscomponentlibrary", "balzortrailscomponentlibrary\balzortrailscomponentlibrary.csproj", "{202EAEF7-D168-4C3E-82A0-C3FE440172C0}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "blazortrailstests", "blazortrailstests\blazortrailstests.csproj", "{76EDD970-8027-465C-BD79-3B92B51F01D0}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -69,6 +71,18 @@ Global
 		{202EAEF7-D168-4C3E-82A0-C3FE440172C0}.Release|x64.Build.0 = Release|Any CPU
 		{202EAEF7-D168-4C3E-82A0-C3FE440172C0}.Release|x86.ActiveCfg = Release|Any CPU
 		{202EAEF7-D168-4C3E-82A0-C3FE440172C0}.Release|x86.Build.0 = Release|Any CPU
+		{76EDD970-8027-465C-BD79-3B92B51F01D0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{76EDD970-8027-465C-BD79-3B92B51F01D0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{76EDD970-8027-465C-BD79-3B92B51F01D0}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{76EDD970-8027-465C-BD79-3B92B51F01D0}.Debug|x64.Build.0 = Debug|Any CPU
+		{76EDD970-8027-465C-BD79-3B92B51F01D0}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{76EDD970-8027-465C-BD79-3B92B51F01D0}.Debug|x86.Build.0 = Debug|Any CPU
+		{76EDD970-8027-465C-BD79-3B92B51F01D0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{76EDD970-8027-465C-BD79-3B92B51F01D0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{76EDD970-8027-465C-BD79-3B92B51F01D0}.Release|x64.ActiveCfg = Release|Any CPU
+		{76EDD970-8027-465C-BD79-3B92B51F01D0}.Release|x64.Build.0 = Release|Any CPU
+		{76EDD970-8027-465C-BD79-3B92B51F01D0}.Release|x86.ActiveCfg = Release|Any CPU
+		{76EDD970-8027-465C-BD79-3B92B51F01D0}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
