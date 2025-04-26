@@ -1,0 +1,78 @@
+﻿@using blazortrailsclient.Features.Home.Model
+@using blazortrailsclient.Features.ManageTrails.Shared
+@inherits TestContext
+
+@code {
+    private readonly Fixture Fixture = new();
+    public FavouriteButtonTest()
+    {
+        this.AddBlazoredLocalStorage();
+        this.Services.AddScoped<AppState>();
+    }
+
+    [Fact]
+    public void RendersAddFavouriteButton_When_TrailIsNotFavourited()
+    {
+        var testTrail = Fixture.Create<TrailModel>();
+
+        var cut = Render(@<FavouriteButton TrailModel="testTrail" />);
+
+        cut.MarkupMatches(
+            @<button class="btn btn-outline-primary ml-1" title="Favourite">
+                <i class="bi bi-heart"></i>
+            </button>
+    );
+    }
+
+    [Fact]
+    public async Task RenderAddFavouriteButton_When_TrailIsFavourited()
+    {
+        var testTrail = Fixture.Create<TrailModel>();
+
+        var appState = this.Services.GetService<AppState>();
+
+        await appState.FavoriteTrailState.AddFavourite(testTrail);
+
+        var cut = Render(@<FavouriteButton TrailModel="testTrail" />);
+
+        cut.MarkupMatches(
+            @<button class="btn btn-outline-primary ml-1" title="Favourite">
+                <i class="bi bi-heart-fill"></i>
+            </button>
+    );
+    }
+
+    [Fact]
+    public void AddTrailToFavourite_When_TrailIsNotFavourited()
+    {
+        var testTrail = Fixture.Create<TrailModel>();
+
+        var cut = Render(@<FavouriteButton TrailModel="testTrail" />);
+
+        var button = cut.Find("button");
+
+        button.Click();
+
+        var appState = this.Services.GetService<AppState>();
+
+        Assert.True(appState.FavoriteTrailState.IsFavourite(testTrail));
+    }
+
+    [Fact]
+    public async Task RemoveFromFavourite_When_TrailIsFavourited()
+    {
+        var testTrail = Fixture.Create<TrailModel>();
+
+        var appState = this.Services.GetService<AppState>();
+
+        await appState.FavoriteTrailState.AddFavourite(testTrail);
+
+        var cut = Render(@<FavouriteButton TrailModel="testTrail" />);
+
+        var button = cut.Find("button");
+
+        button.Click();
+
+        Assert.False(appState.FavoriteTrailState.IsFavourite(testTrail));
+    }
+}

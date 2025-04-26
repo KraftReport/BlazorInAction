@@ -1,0 +1,38 @@
+﻿@using balzortrailscomponentlibrary.Map
+@inherits TestContext
+
+@code {
+    private BunitJSInterop _routeMapModule;
+    private JSRuntimeInvocationHandler _routeMapInitalizationInvocation;
+
+    public RouteMapTest()
+    {
+        _routeMapModule = JSInterop.SetupModule();
+        _routeMapInitalizationInvocation = _routeMapModule.SetupVoid("initialize", _ => true).SetVoidResult();
+    }
+
+    [Fact]
+    public void InitializesMap_When_ComponentFirstRenders()
+    {
+        var cut = Render(@<RouteMap />);
+
+        _routeMapInitalizationInvocation.VerifyInvoke("initialize", calledTimes: 1);
+    }
+
+    [Fact]
+    public void CallingDeleteWaypointFunction_When_DeleteWaypointButtonClicked()
+    {
+        var latlng = new LatLong(1m, 2m);
+        
+        var plannedInvocation = _routeMapModule.Setup<LatLong>("deleteLastWaypoint", _ => true)
+                                .SetResult(latlng);
+        
+        var cut = Render(@<RouteMap />);
+        
+        var deleteButton = cut.Find("button");
+        
+        deleteButton.Click();
+        
+        plannedInvocation.VerifyInvoke("deleteLastWaypoint", calledTimes: 1);
+    }
+}
