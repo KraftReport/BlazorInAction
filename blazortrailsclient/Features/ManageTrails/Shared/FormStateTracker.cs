@@ -28,7 +28,7 @@ namespace blazortrailsclient.Features.ManageTrails.Shared
             Console.WriteLine($"Field changed: {e.FieldIdentifier.FieldName}");
             if (trail.Id == 0)
             {
-                AppState.SetUnSavedNewTrailDto(trail);
+                AppState.NewtrailState.SetUnSavedNewTrailDto(trail);
             }
         }
     }

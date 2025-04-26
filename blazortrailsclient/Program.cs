@@ -1,3 +1,4 @@
+using Blazored.LocalStorage;
 using blazortrailsclient;
 using blazortrailsclient.State;
 using MediatR;
@@ -24,6 +25,8 @@ builder.Services.AddOidcAuthentication(option =>
 });
 
 builder.Services.AddScoped<AppState>();
+
+builder.Services.AddBlazoredLocalStorage();
 
 builder.Services.AddMediatR(typeof(Program).Assembly);
  

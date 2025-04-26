@@ -12,6 +12,7 @@
         <button class="btn btn-primary" title="View" @onclick="@(async () => await OnSelected.InvokeAsync(trailModel))">
             <i class="bi bi-binoculars"></i>
         </button>
+        <FavouriteButton TrailModel="trailModel" />
         <button class="btn btn-outline-secondary float-right" title="Edit" @onclick="@(()=>navigationManager.NavigateTo($"/edit-trail/{trailModel.Id}"))">
             Update
         </button>

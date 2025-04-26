@@ -1,24 +1,48 @@
-﻿using blazortrailsshared.Features.ManageTrails.Shared;
+﻿using Blazored.LocalStorage;
+using blazortrailsshared.Features.ManageTrails.Shared;
 
 namespace blazortrailsclient.State
 {
     public class AppState
     {
-        public TrailDto _unSavedNewTrailDto = new TrailDto();
+        public NewTrailState NewtrailState { get; }
+        public FavoriteTrailState FavoriteTrailState { get; }
+        public bool IsInitialized;
 
-        public void SetUnSavedNewTrailDto(TrailDto trailDto)
+        public AppState(ILocalStorageService localStorageService)
         {
-            _unSavedNewTrailDto = trailDto;
+            FavoriteTrailState = new FavoriteTrailState(localStorageService);
+            NewtrailState = new NewTrailState();
         }
 
-        public TrailDto GetUnSavedTrailDto()
+        public async Task Initialize()
         {
-            return _unSavedNewTrailDto;
+            if (!IsInitialized)
+            {
+                await FavoriteTrailState.OnInitialized();
+                IsInitialized = true;
+            }
         }
 
-        public void ClearUnSavedTrailDto()
+        public class NewTrailState
         {
-            _unSavedNewTrailDto = new TrailDto();
+            public TrailDto _unSavedNewTrailDto = new TrailDto();
+
+            public void SetUnSavedNewTrailDto(TrailDto trailDto)
+            {
+                _unSavedNewTrailDto = trailDto;
+            }
+
+            public TrailDto GetUnSavedTrailDto()
+            {
+                return _unSavedNewTrailDto;
+            }
+
+            public void ClearUnSavedTrailDto()
+            {
+                _unSavedNewTrailDto = new TrailDto();
+            }
+
         }
     }
 }
