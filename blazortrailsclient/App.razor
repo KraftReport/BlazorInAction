@@ -1,14 +1,17 @@
-﻿<CascadingAuthenticationState>
+﻿@using blazortrailsclient.State
+@inject AppState AppState
+
+<CascadingAuthenticationState>
     <Router AppAssembly="@typeof(App).Assembly">
         <Found Context="routeData">
             <AuthorizeRouteView RouteData="@routeData" DefaultLayout="@typeof(MainLayout)">
-            <Authorizing>
-                <p>Determining session state. Please wait .....</p>
-            </Authorizing>
-            <NotAuthorized>
-                <h1>Sorry</h1>4
-                <p>You are not allowed to reach this page. Please log in.</p>
-            </NotAuthorized>
+                <Authorizing>
+                    <p>Determining session state. Please wait .....</p>
+                </Authorizing>
+                <NotAuthorized>
+                    <h1>Sorry</h1>4
+                    <p>You are not allowed to reach this page. Please log in.</p>
+                </NotAuthorized>
             </AuthorizeRouteView>
             <FocusOnNavigate RouteData="@routeData" Selector="h1" />
         </Found>
@@ -20,3 +23,13 @@
         </NotFound>
     </Router>
 </CascadingAuthenticationState>
+
+@code{
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            await AppState.Initialize();
+        }
+    }
+}

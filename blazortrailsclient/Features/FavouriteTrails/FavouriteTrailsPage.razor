@@ -1,0 +1,51 @@
+﻿@page "/favourite-trails"
+@using blazortrailsclient.State
+@inject AppState AppState
+@implements IDisposable
+
+<PageTitle>Favourite Trails - Blazing Trails</PageTitle>
+
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="/">Home</a></li>
+        <li class="breadcrumb-item active" aria-current="page">Favourtie Trails</li>
+    </ol>
+</nav>
+
+<h3 class="mt-5 mb-4">Favourite Trails</h3>
+
+@if (AppState.FavoriteTrailState.FavouriteTrails.Any())
+{
+    <TrailDetail Trail="_selectTrail" />
+    <div class="grid">
+        @foreach(var trail in AppState.FavoriteTrailState.FavouriteTrails)
+        {
+            <Trail trailModel="trail" OnSelected="HandleTrailSelected" />
+        }
+    </div>
+}
+else
+{
+    <NoTrails>
+        You don't have any favourite trails :(
+    </NoTrails>
+}
+
+
+@code {
+    private TrailModel? _selectTrail;
+    protected override void OnInitialized()
+    {
+        AppState.FavoriteTrailState.OnChange += StateHasChanged;
+    }
+
+    private void HandleTrailSelected(TrailModel trailModel)
+    {
+        _selectTrail = trailModel;
+    }
+
+    void IDisposable.Dispose()
+    {
+        AppState.FavoriteTrailState.OnChange -= StateHasChanged;
+    }
+}

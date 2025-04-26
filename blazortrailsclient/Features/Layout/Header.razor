@@ -1,4 +1,7 @@
 ﻿@using blazortrailsclient.Features.Auth
+@using blazortrailsclient.State
+@inject AppState AppState
+@implements IDisposable
 
 <nav class="navbar mb-5 shadow">
 
@@ -8,4 +11,23 @@
 
 </nav>
 
-<LoginStatus/>
+<div class="container d-flex justify-content-between">
+    <p>You have <span class="font-weight-bold">@AppState.FavoriteTrailState.FavouriteTrails.Count</span></p>
+    <LoginStatus />
+</div>
+
+
+
+
+
+@code{
+    protected override void OnInitialized()
+    {
+        AppState.FavoriteTrailState.OnChange += StateHasChanged;
+    }
+
+    void IDisposable.Dispose()
+    {
+        AppState.FavoriteTrailState.OnChange -= StateHasChanged;
+    }
+}
