@@ -20,6 +20,8 @@
 		<PackageReference Include="Frank.Libraries.AutoFixture" Version="5.0.2" />
 		<PackageReference Include="MediatR" Version="12.5.0" />
 		<PackageReference Include="MediatR.Contracts" Version="2.0.1" />
+		<PackageReference Include="MediatR.Extensions.FluentValidation.AspNetCore" Version="6.0.0" />
+		<PackageReference Include="MediatR.Extensions.Microsoft.DependencyInjection" Version="11.0.0" />
 		<PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.11.1" />
 		<PackageReference Include="coverlet.collector" Version="6.0.0">
 			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
