@@ -1,2 +1,2 @@
 # BlazorInAction
-Learning blazor by reading Blazor in Action written Sainty Chirs.
+Learning blazor by reading Blazor in Action written by Sainty Chirs.
